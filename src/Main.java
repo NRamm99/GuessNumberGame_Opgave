@@ -56,9 +56,9 @@ public class Main {
     public static int getDifficulty(Scanner input) {
         clearConsole();
         System.out.println("---------- Sværhedsgrad ----------");
-        System.out.println("1... nemt");
-        System.out.println("2... middel");
-        System.out.println("3... svært\n");
+        System.out.println("1... nemt (1-10");
+        System.out.println("2... middel (1-50)");
+        System.out.println("3... svært (1-100)\n");
         int difficulty = 1;
         do {
             if (difficulty <= 0 || difficulty >= 4) {
