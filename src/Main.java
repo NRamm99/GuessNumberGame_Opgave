@@ -6,17 +6,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
-        clearConsole();
-        System.out.println("---------- VELKOMMEN ----------");
-        System.out.println("Velkommen til tal-spillet!");
-        System.out.println("Instruktioner:");
-        System.out.println(" - Gæt tallet som jeg tænker på!");
-        System.out.println(" - jeg hjælper dig på vej.");
-        System.out.println("-------------------------------");
-
-        System.out.print("\nTryk enter når du er klar til at spille!");
-        input.nextLine();
-        clearConsole();
+        welcomeSequence(input);
 
         do {
             playGame(input);
@@ -56,7 +46,7 @@ public class Main {
     public static int getDifficulty(Scanner input) {
         clearConsole();
         System.out.println("---------- Sværhedsgrad ----------");
-        System.out.println("1... nemt (1-10");
+        System.out.println("1... nemt (1-10)");
         System.out.println("2... middel (1-50)");
         System.out.println("3... svært (1-100)\n");
         int difficulty = 1;
@@ -68,14 +58,14 @@ public class Main {
             System.out.print("Jeg vælger: ");
             difficulty = input.nextInt();
         } while (difficulty <= 0 || difficulty >= 4);
+
         if (difficulty == 1) {
             return 10;
         } else if (difficulty == 2) {
             return 50;
-        } else if (difficulty == 3) {
+        } else {
             return 100;
         }
-        return difficulty;
     }
 
     public static int getRandomNumber(int max) {
@@ -98,5 +88,20 @@ public class Main {
         System.out.println("2... Nej");
         int userInput = input.nextInt();
         return userInput == 1;
+    }
+
+    public static void welcomeSequence(Scanner input) {
+        clearConsole();
+        System.out.println("---------- VELKOMMEN ----------");
+        System.out.println("Velkommen til tal-spillet!");
+        System.out.println("Instruktioner:");
+        System.out.println(" - Gæt tallet som jeg tænker på!");
+        System.out.println(" - jeg hjælper dig på vej.");
+        System.out.println("-------------------------------");
+
+        System.out.print("\nTryk enter når du er klar til at spille!");
+        input.nextLine();
+        clearConsole();
+
     }
 }
