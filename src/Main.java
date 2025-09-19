@@ -51,23 +51,24 @@ public class Main {
                 3... svært (1-100)
                 """);
 
-        int difficulty = 1;
-        do {
-            if (difficulty <= 0 || difficulty >= 4) {
-                System.out.println("FEJL: Indtastet tal ikke mellem 1-3.");
-                System.out.println("Tast en gyldig sværhedsgrad.");
-            }
-            System.out.print("Jeg vælger: ");
-            difficulty = input.nextInt();
-        } while (difficulty <= 0 || difficulty >= 4);
+        int userInput;
 
-        if (difficulty == 1) {
-            return 10;
-        } else if (difficulty == 2) {
-            return 50;
-        } else {
-            return 100;
-        }
+        do {
+            System.out.print("Jeg vælger: ");
+            userInput = input.nextInt();
+
+            if (userInput < 1 || userInput > 3) {
+                System.out.println("FEJL: Indtastet tal ikke mellem 1-3. Prøv igen.");
+            }
+
+        } while (userInput < 1 || userInput > 3);
+
+        return switch (userInput) {
+            case 1 -> 10;
+            case 2 -> 50;
+            case 3 -> 100;
+            default -> 0;
+        };
     }
 
     public static int getRandomNumber(int max) {
