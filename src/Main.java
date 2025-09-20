@@ -19,28 +19,51 @@ public class Main {
     }
 
     public static void playGame(Scanner input) {
-        int max = getDifficulty(input);
-        int answer = getRandomNumber(max);
-        int guess = 0;
+        int[] range = getDifficulty(input);
+        int min = range[0];
+        int max = range[1];
+        int answer = getRandomNumber(min, max);
+        int guess = -10;
         int counter = 0;
         int lastGuess = 0;
+        boolean gameWin = false;
 
-        while (guess != answer) {
+        while (!gameWin) {
             counter++;
             clearConsole();
-            if (lastGuess != 0) {
-                System.out.println("Sidste gæt: " + lastGuess);
-                System.out.println("Mit tal er " + checkGuess(guess, answer) + "\n");
-            }
-            System.out.print("Gæt #" + counter + ": ");
-            guess = input.nextInt();
-            lastGuess = guess;
-        }
-        System.out.println(checkGuess(guess, answer));
 
+            if ((checkGuess(guess, answer) == -1) && (counter > 1)) {
+                System.out.println("Sidste gæt: " + lastGuess);
+                System.out.println("Mit tal er lavere...\n");
+                System.out.println("Interval: (1 - " + max + ")");
+                System.out.print("Gæt #" + counter + ": ");
+            } else if ((checkGuess(guess, answer) == 0) && (counter >= 1)) {
+                System.out.println("Korrekt!");
+                System.out.println("Du gættede rigtigt på " + (counter - 1) + ". forsøg!");
+                gameWin = true;
+            } else if ((checkGuess(guess, answer) == 1) && (counter > 1)) {
+                System.out.println("Sidste gæt: " + lastGuess);
+                System.out.println("Mit tal er højere...\n");
+                System.out.println("Interval: (1 - " + max + ")");
+                System.out.print("Gæt #" + counter + ": ");
+            } else {
+                System.out.println("Interval: (1 - " + max + ")");
+                System.out.print("Gæt #" + counter + ": ");
+            }
+
+            if (!gameWin) {
+
+                while (!input.hasNextInt()) {
+                    System.out.println("Fejl: Du skal indtaste et tal!");
+                    input.next();
+                }
+                guess = input.nextInt();
+                lastGuess = guess;
+            }
+        }
     }
 
-    public static int getDifficulty(Scanner input) {
+    public static int[] getDifficulty(Scanner input) {
         clearConsole();
         System.out.println("""
                 ---------- Sværhedsgrad ----------
@@ -53,6 +76,10 @@ public class Main {
 
         do {
             System.out.print("Jeg vælger: ");
+            while (!input.hasNextInt()) {
+                System.out.println("Fejl: Du skal indtaste et tal!");
+                input.next();
+            }
             userInput = input.nextInt();
 
             if (userInput < 1 || userInput > 3) {
@@ -61,26 +88,24 @@ public class Main {
 
         } while (userInput < 1 || userInput > 3);
 
-        return switch (userInput) {
+        int min = 1;
+        int max = switch (userInput) {
             case 1 -> 10;
             case 2 -> 50;
             case 3 -> 100;
             default -> 0;
         };
+
+        return new int[]{min, max};
     }
 
-    public static int getRandomNumber(int max) {
-        return (int) (Math.random() * max) + 1;
+    public static int getRandomNumber(int min, int max) {
+        return (int) (Math.random() * (max - min + 1)) + min;
     }
 
-    public static String checkGuess(int guess, int answer) {
-        if (guess < answer) {
-            return "Højere...";
-        } else if (guess > answer) {
-            return "Lavere...";
-        } else {
-            return "Korrekt!";
-        }
+    public static int checkGuess(int guess, int answer) {
+
+        return Integer.compare(answer, guess);
     }
 
     public static boolean handlePlayAgain(Scanner input) {
@@ -88,6 +113,10 @@ public class Main {
                 \nVil du spille igen?
                 1... Ja
                 2... Nej""");
+        while (!input.hasNextInt()) {
+            System.out.println("Fejl: Du skal indtaste et tal!");
+            input.next();
+        }
         int userInput = input.nextInt();
         return userInput == 1;
     }
